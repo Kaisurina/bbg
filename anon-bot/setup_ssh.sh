@@ -58,6 +58,11 @@ mkdir -p $BOT_DIR
 chown -R $DEPLOY_USER:$DEPLOY_USER $BOT_DIR
 chmod 755 $BOT_DIR
 
+# Настройка sudo для пользователя
+echo "Настройка sudo для пользователя $DEPLOY_USER..."
+echo "$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart discord-bot" > /etc/sudoers.d/discord-bot
+chmod 440 /etc/sudoers.d/discord-bot
+
 echo "=================================================="
 echo "SSH настройка успешно завершена!"
 echo "Пользователь: $DEPLOY_USER"

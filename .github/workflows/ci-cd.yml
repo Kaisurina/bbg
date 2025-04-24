@@ -78,4 +78,4 @@ jobs:
         
     - name: Restart service
       run: |
-        ssh ${{ secrets.USER }}@${{ secrets.HOST }} 'sudo systemctl restart discord-bot' 
+        ssh ${{ secrets.USER }}@${{ secrets.HOST }} 'sudo /usr/bin/systemctl restart discord-bot' 
