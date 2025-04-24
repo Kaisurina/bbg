@@ -76,6 +76,13 @@ jobs:
           -e "ssh -o StrictHostKeyChecking=no" \
           ./anon-bot/ ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.DEPLOY_PATH }}/anon-bot/
 
+    - name: Deploy scripts
+      run: |
+        rsync -avz --delete \
+          --exclude '.git*' \
+          -e "ssh -o StrictHostKeyChecking=no" \
+          ./scripts/ ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.DEPLOY_PATH }}/scripts/
+
     - name: Update service configuration
       run: |
         ssh ${{ secrets.USER }}@${{ secrets.HOST }} "DEPLOY_PATH=${{ secrets.DEPLOY_PATH }} SERVICE_NAME=discord-bot PROJECT_DIR=anon-bot bash ${{ secrets.DEPLOY_PATH }}/scripts/update_service.sh"
