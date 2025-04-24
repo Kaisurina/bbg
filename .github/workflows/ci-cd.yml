@@ -1,0 +1,67 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        cd anon-bot
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest
+        pip install flake8
+        
+    - name: Lint with flake8
+      run: |
+        cd anon-bot
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        
+    - name: Run tests
+      run: |
+        cd anon-bot
+        pytest
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.8.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        
+    - name: Add host key
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+        
+    - name: Deploy to production
+      run: |
+        rsync -avz --delete \
+          --exclude '.git*' \
+          --exclude 'tests' \
+          --exclude '.github' \
+          ./anon-bot/ ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.DEPLOY_PATH }}/anon-bot/
+        
+    - name: Restart service
+      run: |
+        ssh ${{ secrets.USER }}@${{ secrets.HOST }} 'sudo systemctl restart discord-bot' 

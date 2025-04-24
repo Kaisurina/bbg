@@ -1,0 +1,7 @@
+{
+  "ADMIN_ROLE_NAME": "Admin",
+  "CATEGORY_NAME": "Anonymous Chats",
+  "LOG_CHANNEL_NAME": "anonymous-logs",
+  "MAX_FILE_SIZE": 26214400,
+  "COMMAND_PREFIX": "!"
+}
