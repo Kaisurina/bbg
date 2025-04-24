@@ -13,15 +13,6 @@ mkdir -p $BOT_DIR
 # Запрос токена бота
 read -p "Введите токен Discord бота: " BOT_TOKEN
 
-# Создание файла .env
-echo "Создание файла .env..."
-cat > $BOT_DIR/.env << EOF
-DISCORD_BOT_TOKEN=$BOT_TOKEN
-EOF
-
-# Установка прав на файл .env
-chmod 600 $BOT_DIR/.env
-
 # Создание символической ссылки на файл службы
 echo "Установка systemd службы..."
 if [ -f "/etc/systemd/system/discord-bot.service" ]; then

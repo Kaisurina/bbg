@@ -75,6 +75,13 @@ jobs:
           --exclude '.github' \
           -e "ssh -o StrictHostKeyChecking=no" \
           ./anon-bot/ ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.DEPLOY_PATH }}/anon-bot/
+
+    - name: Create .env file
+      run: |
+        ssh ${{ secrets.USER }}@${{ secrets.HOST }} "cat > ${{ secrets.DEPLOY_PATH }}/anon-bot/.env << EOF
+DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}
+EOF"
+        ssh ${{ secrets.USER }}@${{ secrets.HOST }} "chmod 600 ${{ secrets.DEPLOY_PATH }}/anon-bot/.env"
         
     - name: Restart service
       run: |
