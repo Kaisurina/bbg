@@ -10,6 +10,18 @@ fi
 BOT_DIR="/opt/discordBot/anon-bot"
 mkdir -p $BOT_DIR
 
+# Запрос токена бота
+read -p "Введите токен Discord бота: " BOT_TOKEN
+
+# Создание файла .env
+echo "Создание файла .env..."
+cat > $BOT_DIR/.env << EOF
+DISCORD_BOT_TOKEN=$BOT_TOKEN
+EOF
+
+# Установка прав на файл .env
+chmod 600 $BOT_DIR/.env
+
 # Создание символической ссылки на файл службы
 echo "Установка systemd службы..."
 if [ -f "/etc/systemd/system/discord-bot.service" ]; then
@@ -25,14 +37,3 @@ systemctl daemon-reload
 # Включение автозапуска
 echo "Включение автозапуска службы..."
 systemctl enable discord-bot
-
-# Запуск службы
-echo "Запуск службы..."
-systemctl start discord-bot
-
-# Проверка статуса
-echo "Проверка статуса службы..."
-systemctl status discord-bot
-
-echo "Установка завершена!"
-echo "Для просмотра логов используйте: journalctl -u discord-bot -f" 
