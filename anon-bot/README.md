@@ -76,7 +76,12 @@ sudo ./setup_ssh.sh
    - `HOST`: IP-адрес или домен сервера
    - `USER`: имя пользователя, которое вы ввели в шаге 4
    - `DEPLOY_PATH`: путь для деплоя (например, /opt/deploy)
-   - `DISCORD_BOT_TOKEN`: токен вашего Discord бота
+
+7. Создайте файл `.env` в директории деплоя на сервере:
+```bash
+echo "DISCORD_BOT_TOKEN=your_bot_token_here" > /opt/deploy/anon-bot/.env
+chmod 600 /opt/deploy/anon-bot/.env
+```
 
 #### Автоматическая установка
 

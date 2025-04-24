@@ -60,7 +60,7 @@ chmod 755 $BOT_DIR
 
 # Настройка sudo для пользователя
 echo "Настройка sudo для пользователя $DEPLOY_USER..."
-echo "$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart discord-bot" > /etc/sudoers.d/discord-bot
+echo "$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart" > /etc/sudoers.d/discord-bot
 chmod 440 /etc/sudoers.d/discord-bot
 
 echo "=================================================="
