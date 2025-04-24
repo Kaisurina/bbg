@@ -66,7 +66,14 @@ jobs:
     - name: Test SSH connection
       run: |
         ssh -v ${{ secrets.USER }}@${{ secrets.HOST }} 'echo "SSH connection successful"'
-        
+
+    - name: Add .env file
+      run: |
+        ssh ${{ secrets.USER }}@${{ secrets.HOST }} "cat > ${{ secrets.DEPLOY_PATH }}/anon-bot/.env << 'EOF'
+        DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}
+        EOF"
+        ssh ${{ secrets.USER }}@${{ secrets.HOST }} "chmod 600 ${{ secrets.DEPLOY_PATH }}/anon-bot/.env"
+
     - name: Deploy to production
       run: |
         rsync -avz --delete \
